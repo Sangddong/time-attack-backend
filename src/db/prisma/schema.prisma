@@ -14,8 +14,8 @@ datasource db {
 }
 
 model User {
-  id                String         @id
-  email             String @unique
+  id                String      @id
+  email             String      @unique
   encryptedPassword String
   createdAt         DateTime    @default(now())
   nickname          String?
@@ -23,8 +23,7 @@ model User {
   tweets            Tweets[]
   comments          Comments[]
   bookmarkedTwitts  Bookmarks[]
-  // follow Follow[]
-  // following Follow[]
+  profile Profile?
 }
 
 model Tweets {
@@ -34,7 +33,7 @@ model Tweets {
   content    String
   comments   Comments[]
   createdAt  DateTime    @default(now())
-  updatedAt DateTime
+  updatedAt  DateTime?
   bookmarked Bookmarks[]
 }
 
@@ -58,13 +57,11 @@ model Bookmarks {
   @@unique([userId, tweetId])
 }
 
-// model Profile{
-//   userId Int
-//   user User @relation(fields: [userId], references: [id])
-//   nickname String?
-
-//   @@unique([userId])
-// }
+model Profile {
+  id     Int  @id @default(autoincrement())
+  userId String  @unique
+  user   User @relation(fields: [userId], references: [id])
+}
 
 // model Follow{
 //   followerId Int
