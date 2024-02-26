@@ -1,5 +1,5 @@
 import prismaClient from "../../db/prisma/client.prisma";
-import { CreateTweetData, ReadTweetData } from "./tweets.type";
+import { Request, Response } from "express";
 
 const getTweets = async () => {
   const tweets = await prismaClient.tweets.findMany();
@@ -7,20 +7,49 @@ const getTweets = async () => {
   return tweets;
 }
 
-// const createTweet = async (createTweetData: CreateTweetData) => {
-//   const { authorId, content } = createTweetData;
-//   const tweet = await prismaClient.tweets.create({
-//     data: {
-//       content,
-//       author: { connect: { id: authorId } }
-//     }
-//   });
-// }
+const createTweet = async (req: Request, res: Response) => {
+  const { authorId, content } = req.body;
+  const tweet = await prismaClient.tweets.create({
+    data: {
+      author: { connect: { id: authorId } },
+      content: content,
+    }
+  })
 
-// const tweetService = {
-//   getTweets,
-//   createTweet
-// }
+  return tweet;
+}
 
-// export default tweetService;
+const updateTweet = async (req: Request, res: Response) => {
+  const { tweetId, content } = req.body;
+  const updatedTweet = await prismaClient.tweets.update({
+    where: { id: tweetId },
+    data: {
+      content: content,
+      updatedAt: new Date(),
+    }
+  })
+
+  return updatedTweet;
+}
+
+const deleteTweet = async (id: number) => {
+  const deleteTweet = await prismaClient.tweets.delete({
+    where: { id }
+  })
+
+  return deleteTweet;
+}
+
+// cosnt bookmarkTweet = async (id: number) => {
+//   const bookmark = await prismaClient.bookmarks.create({
+
+//   })
+// }
+const tweetService = {
+  getTweets,
+  createTweet,
+  updateTweet,
+  deleteTweet,
+}
+export default tweetService;
 

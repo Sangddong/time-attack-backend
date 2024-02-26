@@ -1,10 +1,12 @@
-// import { Router } from "express";
-// import authService from "./tweets.service";
-// import tweetService from "./tweets.service";
+import { Router } from "express";
+import tweetService from "./tweets.service";
+import authController from "../auth/auth.controller";
 
-// const tweetController = Router();
+const tweetController = Router();
 
-// tweetController.get("/tweets", tweetService.getTweets);
-// tweetController.post("/tweets", tweetService.createTweet);
+tweetController.get("/", tweetService.getTweets);
+tweetController.post("/", authController, tweetService.createTweet);
+tweetController.patch("/:tweetId", authController, tweetService.updateTweet);
+tweetController.delete("/:tweetId", authController, tweetService.deleteTweet);
 
-// export default tweetController;
+export default tweetController;
