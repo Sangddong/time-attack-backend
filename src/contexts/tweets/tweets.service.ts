@@ -9,19 +9,20 @@ const getTweets = async () => {
 
 const createTweet = async (req: Request, res: Response) => {
   const { authorId, content } = req.body;
-  const tweet = await prismaClient.tweets.create({
+  const response = await prismaClient.tweets.create({
     data: {
       author: { connect: { id: authorId } },
       content: content,
+      createdAt: new Date
     }
   })
 
-  return tweet;
+  res.json(response);
 }
 
 const updateTweet = async (req: Request, res: Response) => {
   const { tweetId, content } = req.body;
-  const updatedTweet = await prismaClient.tweets.update({
+  const response = await prismaClient.tweets.update({
     where: { id: tweetId },
     data: {
       content: content,
@@ -29,16 +30,16 @@ const updateTweet = async (req: Request, res: Response) => {
     }
   })
 
-  return updatedTweet;
+  res.json(response);
 }
 
 const deleteTweet = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const deleteTweet = await prismaClient.tweets.delete({
+  const response = await prismaClient.tweets.delete({
     where: { id: parseInt(id) }
   })
 
-  return deleteTweet;
+  res.json(response);
 }
 
 const tweetService = {

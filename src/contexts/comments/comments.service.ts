@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 
 const createComment = async (req: Request, res: Response) => {
   const { authorId, tweetId, content } = req.body;
-  const comments = await prismaClient.comments.create({
+  const response = await prismaClient.comments.create({
     data: {
       author: { connect: { id: authorId } },
       tweet: { connect: { id: tweetId } },
@@ -12,12 +12,12 @@ const createComment = async (req: Request, res: Response) => {
     }
   })
 
-  return comments;
+  res.json(response);
 }
 
 const updateComment = async (req: Request, res: Response) => {
   const { commentId, content } = req.body;
-  const updatedComment = await prismaClient.comments.update({
+  const response = await prismaClient.comments.update({
     where: { id: commentId },
     data: {
       content: content,
@@ -25,16 +25,16 @@ const updateComment = async (req: Request, res: Response) => {
     }
   })
 
-  return updatedComment;
+  res.json(response);
 }
 
 const deleteComment = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const deleteComment = await prismaClient.comments.delete({
+  const response = await prismaClient.comments.delete({
     where: { id: parseInt(id) }
   })
 
-  return deleteComment;
+  res.json(response);
 }
 
 const commentService = {
