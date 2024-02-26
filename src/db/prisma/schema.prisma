@@ -18,12 +18,12 @@ model User {
   email             String      @unique
   encryptedPassword String
   createdAt         DateTime    @default(now())
-  nickname          String?
-  introduceOneLine  String?
+  nickname          String     @unique
+  introduceOneLine  String
   tweets            Tweets[]
   comments          Comments[]
   bookmarkedTwitts  Bookmarks[]
-  profile           Profile?
+  profile Profile?
 }
 
 model Tweets {
@@ -42,9 +42,10 @@ model Comments {
   authorId  String
   author    User     @relation(fields: [authorId], references: [id])
   tweetId   Int
-  tweet     Tweets   @relation(fields: [tweetId], references: [id], onDelete: Cascade)
+  tweet     Tweets   @relation(fields: [tweetId], references: [id], onDelete: Cascade) 
+  content   String
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime?
 }
 
 model Bookmarks {
@@ -58,9 +59,9 @@ model Bookmarks {
 }
 
 model Profile {
-  id     Int    @id @default(autoincrement())
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id])
+  id     Int  @id @default(autoincrement())
+  userId String  @unique
+  user   User @relation(fields: [userId], references: [id])
 }
 
 // model Follow{

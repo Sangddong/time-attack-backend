@@ -22,7 +22,7 @@ const signUp = async (signUpData: SignUpData) => {
   });
   const accessToken = generateAccessToken(user);
 
-  return { accessToken, id };
+  return accessToken;
 };
 
 const logIn = async (logInData: LogInData) => {

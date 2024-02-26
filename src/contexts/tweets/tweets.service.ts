@@ -32,19 +32,15 @@ const updateTweet = async (req: Request, res: Response) => {
   return updatedTweet;
 }
 
-const deleteTweet = async (id: number) => {
+const deleteTweet = async (req: Request, res: Response) => {
+  const { id } = req.params;
   const deleteTweet = await prismaClient.tweets.delete({
-    where: { id }
+    where: { id: parseInt(id) }
   })
 
   return deleteTweet;
 }
 
-// cosnt bookmarkTweet = async (id: number) => {
-//   const bookmark = await prismaClient.bookmarks.create({
-
-//   })
-// }
 const tweetService = {
   getTweets,
   createTweet,
